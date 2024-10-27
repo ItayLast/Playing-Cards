@@ -4,3 +4,5 @@
 // http://localhost:3000/api/cards - for deleting one card with the specific values *DELETE
 // http://localhost:3000/api/cards/random - for getting a random card from the deck *GET
 // http://localhost:3000/api/cards/shuffle - for shuffling the deck *POST
+
+this is version 0.2

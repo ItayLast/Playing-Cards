@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import cardimg from "./manager.png";
+
 interface Card {
   id: number;
   suit: string;
@@ -15,24 +16,19 @@ const CardForm: React.FC = () => {
   const [deleteValue, setDeleteValue] = useState("");
   const [message, setMessage] = useState("");
 
-  // Fetch all cards on component mount
   useEffect(() => {
     fetchCards();
   }, []);
 
-  // Function to fetch all cards from the API
   const fetchCards = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/cards");
       if (!response.ok) throw new Error("Network response was not ok");
       const data = await response.json();
       setCards(data);
-    } catch (error) {
-      console.error("Error fetching cards:", error);
-    }
+    } catch (error) {}
   };
 
-  // Function to add a new card to the deck
   const addCard = async () => {
     const newCard = { suit, value };
     try {
@@ -45,45 +41,34 @@ const CardForm: React.FC = () => {
       });
 
       if (response.ok) {
-        fetchCards(); // Refresh the card list
+        fetchCards();
         setSuit("");
         setValue("");
         setMessage("Card added successfully!");
-      } else {
-        console.error("Error adding card:", response.statusText);
       }
-    } catch (error) {
-      console.error("Error adding card:", error);
-    }
+    } catch (error) {}
   };
 
-  // Function to get a random card
   const getRandomCard = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/cards/random");
       if (!response.ok) throw new Error("Network response was not ok");
       const card = await response.json();
       setRandomCard(card);
-    } catch (error) {
-      console.error("Error fetching random card:", error);
-    }
+    } catch (error) {}
   };
 
-  // Function to shuffle the deck
   const shuffleDeck = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/cards/shuffle", {
         method: "POST",
       });
       if (!response.ok) throw new Error("Network response was not ok");
-      fetchCards(); // Refresh the card list after shuffling
+      fetchCards();
       setMessage("Deck shuffled successfully!");
-    } catch (error) {
-      console.error("Error shuffling deck:", error);
-    }
+    } catch (error) {}
   };
 
-  // Function to delete a card by suit and value
   const deleteCard = async () => {
     const cardToDelete = {
       suit:
@@ -92,13 +77,10 @@ const CardForm: React.FC = () => {
       value: deleteValue.trim().toUpperCase(),
     };
 
-    // Check if suit and value are provided
     if (!cardToDelete.suit || !cardToDelete.value) {
       setMessage("Please provide both suit and value to delete a card.");
       return;
     }
-
-    console.log("Attempting to delete:", cardToDelete); // Log cardToDelete object
 
     try {
       const response = await fetch("http://localhost:3000/api/cards", {
@@ -110,7 +92,7 @@ const CardForm: React.FC = () => {
       });
 
       if (response.ok) {
-        fetchCards(); // Refresh the card list after deletion
+        fetchCards();
         setDeleteSuit("");
         setDeleteValue("");
         setMessage("Card deleted successfully!");
@@ -119,7 +101,6 @@ const CardForm: React.FC = () => {
         setMessage(`Error deleting card: ${errorResponse.message}`);
       }
     } catch (error) {
-      console.error("Error deleting card:", error);
       setMessage("Error deleting card.");
     }
   };
@@ -188,7 +169,7 @@ const CardForm: React.FC = () => {
           </p>
         </div>
       )}
-      {message && <p>{message}</p>} {/* Display message */}
+      {message && <p>{message}</p>}
     </div>
   );
 };

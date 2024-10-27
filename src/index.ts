@@ -3,7 +3,6 @@ import { parse } from "url";
 
 const PORT = 3000;
 
-// Define Card and Deck Types
 type Suit = "Hearts" | "Diamonds" | "Clubs" | "Spades";
 type Value =
   | "2"
@@ -28,7 +27,6 @@ interface Card {
 
 let deck: Card[] = [];
 
-// Initialize a standard deck of 52 cards
 function initializeDeck() {
   const suits: Suit[] = ["Hearts", "Diamonds", "Clubs", "Spades"];
   const values: Value[] = [
@@ -48,7 +46,6 @@ function initializeDeck() {
   ];
   let id = 1;
   deck = [];
-
   suits.forEach((suit) => {
     values.forEach((value) => {
       deck.push({ id: id++, suit, value });
@@ -58,7 +55,6 @@ function initializeDeck() {
 
 initializeDeck();
 
-// Utility function to shuffle the deck
 function shuffleDeck() {
   for (let i = deck.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -66,38 +62,29 @@ function shuffleDeck() {
   }
 }
 
-// Create the server
 const server = createServer((req: IncomingMessage, res: ServerResponse) => {
   const url = parse(req.url || "", true);
   const method = req.method;
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  // Set CORS headers
-  res.setHeader("Access-Control-Allow-Origin", "*"); // Allow all origins
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS"); // Allow specific methods
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type"); // Allow specific headers
-
-  // Handle preflight OPTIONS requests
   if (method === "OPTIONS") {
     res.writeHead(204);
     res.end();
     return;
   }
 
-  // Set JSON header for response
   res.setHeader("Content-Type", "application/json");
 
-  // Handle different API routes
   if (url.pathname === "/api/cards" && method === "GET") {
-    // Get all cards
     res.statusCode = 200;
     res.end(JSON.stringify(deck));
   } else if (url.pathname === "/api/cards/random" && method === "GET") {
-    // Get a random card
     const randomCard = deck[Math.floor(Math.random() * deck.length)];
     res.statusCode = 200;
     res.end(JSON.stringify(randomCard));
   } else if (url.pathname === "/api/cards" && method === "POST") {
-    // Add a new card to the deck
     let body = "";
     req.on("data", (chunk: Buffer) => {
       body += chunk.toString();
@@ -110,12 +97,10 @@ const server = createServer((req: IncomingMessage, res: ServerResponse) => {
       res.end(JSON.stringify(newCard));
     });
   } else if (url.pathname === "/api/cards/shuffle" && method === "POST") {
-    // Shuffle the deck
     shuffleDeck();
     res.statusCode = 200;
     res.end(JSON.stringify({ message: "Deck shuffled successfully" }));
   } else if (url.pathname === "/api/cards" && method === "DELETE") {
-    // Delete a card by suit and value
     let body = "";
     req.on("data", (chunk: Buffer) => {
       body += chunk.toString();
@@ -135,13 +120,11 @@ const server = createServer((req: IncomingMessage, res: ServerResponse) => {
       }
     });
   } else {
-    // Route not found
     res.statusCode = 404;
     res.end(JSON.stringify({ message: "Route not found" }));
   }
 });
 
-// Start the server
 server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
