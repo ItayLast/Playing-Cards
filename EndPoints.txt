@@ -1,0 +1,6 @@
+// The endpoints:
+// http://localhost:3000/api/cards - for getting all the cards *GET
+// http://localhost:3000/api/cards - for duplicating\creating a card requires giving a suit and value *POST
+// http://localhost:3000/api/cards - for deleting one card with the specific values *DELETE
+// http://localhost:3000/api/cards/random - for getting a random card from the deck *GET
+// http://localhost:3000/api/cards/shuffle - for shuffling the deck *POST
