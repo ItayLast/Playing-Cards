@@ -4,7 +4,7 @@ import {
   shuffleDeck,
   addCard,
   deleteCard,
-} from "../controllers/dackController";
+} from "../controllers/deckController";
 
 const router = express.Router();
 

@@ -6,6 +6,7 @@ const app = express();
 const PORT = 3000;
 
 app.use(cors());
+app.use(express.json())
 
 // Routes
 app.use("/api/cards", cardsRouter);

@@ -9,6 +9,7 @@ const cards_1 = __importDefault(require("./routes/cards"));
 const app = (0, express_1.default)();
 const PORT = 3000;
 app.use((0, cors_1.default)());
+app.use(express_1.default.json());
 // Routes
 app.use("/api/cards", cards_1.default);
 // Handle unknown routes

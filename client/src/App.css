@@ -40,3 +40,23 @@
 .read-the-docs {
   color: #888;
 }
+
+select {
+  padding: 10px; /* Add padding for better spacing */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 5px; /* Rounded corners */
+  background-color: white; /* Background color */
+  font-size: 16px; /* Font size */
+  margin-right: 10px; /* Spacing between selects */
+  transition: border-color 0.3s; /* Transition effect */
+  color: black;
+}
+
+select:focus {
+  border-color: #007BFF; /* Border color on focus */
+  outline: none; /* Remove default outline */
+}
+
+option {
+  padding: 10px; /* Padding for options */
+}

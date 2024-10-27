@@ -1,7 +1,7 @@
 // src/App.tsx
 import React from "react";
 import "./style.css";
-import "./index.css";
+import "./App.css";
 import CardForm from "./components/CardForm";
 
 const App: React.FC = () => {

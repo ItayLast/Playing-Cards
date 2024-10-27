@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import cardimg from "./manager.png";
-
+import "../cards.css";
+import "../App.css";
 interface Card {
   id: number;
   suit: string;
@@ -30,7 +31,12 @@ const CardForm: React.FC = () => {
   };
 
   const addCard = async () => {
+    if (!suit || !value) {
+      setMessage("Please provide both suit and value to add a card.");
+      return;
+    }
     const newCard = { suit, value };
+
     try {
       const response = await fetch("http://localhost:3000/api/cards", {
         method: "POST",
@@ -105,6 +111,20 @@ const CardForm: React.FC = () => {
     }
   };
 
+  const getCardSuitIcon = (suit: string) => {
+    switch (suit) {
+      case "Hearts":
+        return "♥";
+      case "Spades":
+        return "♠";
+      case "Diamonds":
+        return "♦";
+      case "Clubs":
+        return "♣";
+    }
+    return "";
+  };
+
   return (
     <div className="main-container">
       <img
@@ -112,63 +132,115 @@ const CardForm: React.FC = () => {
         alt="Card Manager"
         style={{ width: "100%", maxWidth: "400px" }}
       />
+
       <div>
         <h2>Add Card</h2>
-        <input
-          type="text"
-          placeholder="Suit (Hearts, Diamonds, Clubs, Spades)"
-          value={suit}
-          onChange={(e) => setSuit(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Value (2-10, J, Q, K, A)"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-        />
+
+        <select value={suit} onChange={(e) => setSuit(e.target.value)}>
+          <option value="" disabled>
+            Select Suit
+          </option>
+          <option value="Hearts">Hearts</option>
+          <option value="Diamonds">Diamonds</option>
+          <option value="Clubs">Clubs</option>
+          <option value="Spades">Spades</option>
+        </select>
+
+        <select value={value} onChange={(e) => setValue(e.target.value)}>
+          <option value="" disabled>
+            Select Value
+          </option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="J">J</option>
+          <option value="Q">Q</option>
+          <option value="K">K</option>
+          <option value="A">A</option>
+        </select>
+
         <button onClick={addCard}>Add Card</button>
       </div>
+
       <div>
         <h2>Delete Card</h2>
-        <input
-          type="text"
-          placeholder="Suit (Hearts, Diamonds, Clubs, Spades)"
+        <select
           value={deleteSuit}
           onChange={(e) => setDeleteSuit(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Value (2-10, J, Q, K, A)"
+        >
+          <option value="" disabled>
+            Select Suit
+          </option>
+          <option value="Hearts">Hearts</option>
+          <option value="Diamonds">Diamonds</option>
+          <option value="Clubs">Clubs</option>
+          <option value="Spades">Spades</option>
+        </select>
+
+        <select
           value={deleteValue}
           onChange={(e) => setDeleteValue(e.target.value)}
-        />
+        >
+          <option value="" disabled>
+            Select Value
+          </option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="J">J</option>
+          <option value="Q">Q</option>
+          <option value="K">K</option>
+          <option value="A">A</option>
+        </select>
+
         <button onClick={deleteCard}>Delete Card</button>
       </div>
+
       <div>
         <h2>Get Random Card / Shuffle Deck</h2>
         <button onClick={getRandomCard}>Get Random Card</button>
         <button onClick={shuffleDeck}>Shuffle Deck</button>
       </div>
-      <h2>Current Cards</h2>
-      <ul>
+      <div className="playingCards simpleCards">
+        {randomCard && (
+          <div>
+            <h2>Random Card</h2>
+            <label
+              className={`card rank-${randomCard.value.toLowerCase()} ${randomCard.suit.toLowerCase()}`}
+            >
+              <span className="rank">{randomCard.value}</span>
+              <span className="suit">{getCardSuitIcon(randomCard.suit)}</span>
+            </label>
+          </div>
+        )}
+        <h2>Current Cards</h2>
+
         {cards.length > 0 ? (
           cards.map((card) => (
-            <li key={card.id}>
-              {card.value} of {card.suit}
-            </li>
+            <label
+              key={card.id}
+              className={`card rank-${card.value.toLowerCase()} ${card.suit.toLowerCase()}`}
+            >
+              <span className="rank">{card.value}</span>
+              <span className="suit">{getCardSuitIcon(card.suit)}</span>
+            </label>
           ))
         ) : (
-          <li>No cards available.</li>
+          <label>No cards available.</label>
         )}
-      </ul>
-      {randomCard && (
-        <div>
-          <h2>Random Card</h2>
-          <p>
-            {randomCard.value} of {randomCard.suit}
-          </p>
-        </div>
-      )}
+      </div>
       {message && <p>{message}</p>}
     </div>
   );
