@@ -1,4 +1,6 @@
-const suits = ["Hearts", "Diamonds", "Clubs", "Spades"] as const;
+import { v4 as uuidv4 } from "uuid";
+
+const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
 const values = [
   "2",
   "3",
@@ -13,13 +15,13 @@ const values = [
   "Q",
   "K",
   "A",
-] as const;
+]; //Keeping these as is
 
 export type Suit = (typeof suits)[number];
 export type Value = (typeof values)[number];
 
 export type Card = {
-  id: number;
+  id: string;
   suit: Suit;
   value: Value;
 };
@@ -27,11 +29,10 @@ export type Card = {
 let deck: Card[];
 
 (function initializeDeck() {
-  let id = 1;
   deck = [];
   suits.forEach((suit) => {
     values.forEach((value) => {
-      deck.push({ id: id++, suit, value });
+      deck.push({ id: uuidv4(), suit, value }); // Use uuid for the ID
     });
   });
 })();
@@ -48,7 +49,7 @@ export function getDeck(): Card[] {
 }
 
 export function addCard(newCard: Card): Card {
-  newCard.id = deck.length ? deck[deck.length - 1].id + 1 : 1;
+  newCard.id = uuidv4(); // u cant use deck length for id FIXED
   deck.push(newCard);
   return newCard;
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import cardimg from "./manager.png";
-import "../cards.css";
-import "../App.css";
+import cardimg from "../../public/manager.png";
+import "../styles/cards.css";
+import "../styles/App.css";
 interface Card {
   id: number;
   suit: string;
@@ -76,26 +76,18 @@ const CardForm: React.FC = () => {
   };
 
   const deleteCard = async () => {
-    const cardToDelete = {
-      suit:
-        deleteSuit.trim().charAt(0).toUpperCase() +
-        deleteSuit.trim().slice(1).toLowerCase(),
-      value: deleteValue.trim().toUpperCase(),
-    };
-
-    if (!cardToDelete.suit || !cardToDelete.value) {
-      setMessage("Please provide both suit and value to delete a card.");
+    if (!deleteSuit || !deleteValue) {
+      setMessage("Please select both suit and value to delete a card.");
       return;
     }
 
     try {
-      const response = await fetch("http://localhost:3000/api/cards", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(cardToDelete),
-      });
+      const response = await fetch(
+        `http://localhost:3000/api/cards/${deleteSuit}/${deleteValue}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (response.ok) {
         fetchCards();
@@ -121,17 +113,14 @@ const CardForm: React.FC = () => {
         return "♦";
       case "Clubs":
         return "♣";
+      default:
+        throw new Error(`Invalid suit: ${suit}`);
     }
-    return "";
   };
-
+  //changing to make use of types will require some changes to all function and is not worth it in this case there are already a check of value
   return (
     <div className="main-container">
-      <img
-        src={cardimg}
-        alt="Card Manager"
-        style={{ width: "200%", maxWidth: "600px" }}
-      />
+      <img src={cardimg} alt="Card Manager" className="logo" />
 
       <div>
         <h2>Add Card</h2>
@@ -204,7 +193,6 @@ const CardForm: React.FC = () => {
           <option value="K">K</option>
           <option value="A">A</option>
         </select>
-
         <button onClick={deleteCard}>Delete Card</button>
       </div>
 

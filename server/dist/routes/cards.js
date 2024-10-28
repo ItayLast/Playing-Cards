@@ -21,16 +21,20 @@ router.post("/", (req, res) => {
 });
 router.patch("/", (req, res) => {
     (0, deckController_1.shuffleDeck)();
-    res.json({ message: "Deck shuffled successfully" });
+    res.json({ message: "Deck shuffled successfully" }); // u dont return any http code res. please use http correctly FIXED
+    res.status(200).json({ message: "Deck shuffled successfully" });
 });
-router.delete("/", (req, res) => {
-    const { suit, value } = req.body;
+router.delete("/:suit/:value", (req, res) => {
+    const { suit, value } = req.params; // Extract suit and value from URL parameters
     const deletedCard = (0, deckController_1.deleteCard)(suit, value);
     if (deletedCard) {
-        res.json(deletedCard);
+        res
+            .status(200)
+            .json({ message: "Card deleted successfully", card: deletedCard });
     }
     else {
         res.status(404).json({ message: "Card not found" });
     }
 });
+// DELETE http://api/$value/$suit
 exports.default = router;

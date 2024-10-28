@@ -4,6 +4,7 @@ exports.shuffleDeck = shuffleDeck;
 exports.getDeck = getDeck;
 exports.addCard = addCard;
 exports.deleteCard = deleteCard;
+const uuid_1 = require("uuid");
 const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
 const values = [
     "2",
@@ -19,14 +20,13 @@ const values = [
     "Q",
     "K",
     "A",
-];
+]; //Keeping these as is
 let deck;
 (function initializeDeck() {
-    let id = 1;
     deck = [];
     suits.forEach((suit) => {
         values.forEach((value) => {
-            deck.push({ id: id++, suit, value });
+            deck.push({ id: (0, uuid_1.v4)(), suit, value }); // Use uuid for the ID
         });
     });
 })();
@@ -40,7 +40,7 @@ function getDeck() {
     return deck;
 }
 function addCard(newCard) {
-    newCard.id = deck.length ? deck[deck.length - 1].id + 1 : 1;
+    newCard.id = (0, uuid_1.v4)(); // u cant use deck length for id FIXED
     deck.push(newCard);
     return newCard;
 }
