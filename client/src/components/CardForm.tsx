@@ -3,7 +3,7 @@ import cardimg from "../../public/manager.png";
 import "../styles/cards.css";
 import "../styles/App.css";
 interface Card {
-  id: number;
+  id: string;
   suit: string;
   value: string;
 }
@@ -16,6 +16,8 @@ const CardForm: React.FC = () => {
   const [deleteSuit, setDeleteSuit] = useState("");
   const [deleteValue, setDeleteValue] = useState("");
   const [message, setMessage] = useState("");
+
+  // type Suit = "Hearts" | "Spades" | "Diamonds" | "Clubs";
 
   useEffect(() => {
     fetchCards();
