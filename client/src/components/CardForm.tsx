@@ -130,7 +130,7 @@ const CardForm: React.FC = () => {
       <img
         src={cardimg}
         alt="Card Manager"
-        style={{ width: "100%", maxWidth: "400px" }}
+        style={{ width: "200%", maxWidth: "600px" }}
       />
 
       <div>
