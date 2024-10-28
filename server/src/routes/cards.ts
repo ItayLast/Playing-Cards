@@ -36,7 +36,7 @@ router.delete("/", (req: Request, res: Response) => {
   if (deletedCard) {
     res.json(deletedCard);
   } else {
-    res.status(404).json({ message: "Card not found" });
+    res.status(404).json({ message: "Card not found " });
   }
 });
 
