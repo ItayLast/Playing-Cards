@@ -24,7 +24,7 @@ router.post("/", (req: Request, res: Response) => {
   res.status(201).json(card);
 });
 
-router.post("/shuffle", (req: Request, res: Response) => {
+router.patch("/", (req: Request, res: Response) => {
   shuffleDeck();
   res.json({ message: "Deck shuffled successfully" });
 });
@@ -36,7 +36,7 @@ router.delete("/", (req: Request, res: Response) => {
   if (deletedCard) {
     res.json(deletedCard);
   } else {
-    res.status(404).json({ message: "Card not found " });
+    res.status(404).json({ message: "Card not found" });
   }
 });
 

@@ -19,7 +19,7 @@ router.post("/", (req, res) => {
     const card = (0, deckController_1.addCard)(newCard);
     res.status(201).json(card);
 });
-router.post("/shuffle", (req, res) => {
+router.patch("/", (req, res) => {
     (0, deckController_1.shuffleDeck)();
     res.json({ message: "Deck shuffled successfully" });
 });

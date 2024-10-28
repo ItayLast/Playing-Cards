@@ -66,8 +66,8 @@ const CardForm: React.FC = () => {
 
   const shuffleDeck = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/cards/shuffle", {
-        method: "POST",
+      const response = await fetch("http://localhost:3000/api/cards", {
+        method: "PATCH",
       });
       if (!response.ok) throw new Error("Network response was not ok");
       fetchCards();
